@@ -1,10 +1,10 @@
 import pandas as pd
 
-data_columns = ['МАШИНА', 'цена (Р)', 'год выпуска', 'пробег (км)', 'налог (Р/Год)',
-                'объем двигателя (литров)', 'кол-во л.с.', 'тип коробки передач']
 
 
 def normalize_function(in_df: pd.DataFrame, dir_norm: dict[str: bool]) -> (pd.DataFrame, list):
+    data_columns = in_df.columns.to_list()
+
     col_extr = [
         max(in_df[data_columns[i]].to_list()) if dir_norm[data_columns[i]] else min(in_df[data_columns[i]].to_list())
         for i in range(1, len(data_columns))
