@@ -2,6 +2,7 @@ import pandas as pd
 
 from ideal_point import ideal_point
 from multiplicative_convolution import MC
+from hermeyer_bundle import hermeyer_bundle
 from normalize import normalize_function, print_rating
 from wsm import WSM
 
@@ -9,6 +10,7 @@ data_columns = ['МАШИНА', 'цена (Р)', 'год выпуска', 'пр�
                 'объем двигателя (литров)', 'кол-во л.с.', 'тип коробки передач']
 
 if __name__ == "__main__":
+    #  Исходные данные
     input_data = pd.DataFrame(
         [['Honda Integra III', 500000, 1998, 190000, 4080, 1.6, 120, 1],
          ['Mitsubishi Eclipse III', 625000, 2003, 172500, 4896, 2.4, 149, 2],
@@ -23,7 +25,7 @@ if __name__ == "__main__":
         columns=data_columns
     )
 
-    # True - максимизация, False - минимизация
+    # Направление оптимизации: True - максимизация, False - минимизация
     direction_optimisation = {
         data_columns[1]: False,
         data_columns[2]: True,
@@ -44,4 +46,6 @@ if __name__ == "__main__":
     print("\nМЕТОД ИДЕАЛЬНЫХ ТОЧЕК")
     ideal_point_str = [1500000, 1989, 70200, 3000, 1.6, 115, 1]  # Идеальная точка
     print_rating(ideal_point(norm_df, ideal_point_str, direction_optimisation, extramural), False)
-
+    print("\nМетод Гермейера")
+    weights_bundle = [0.8, 0.2, 1.0, 0.7, 0.6, 0.6, 0.4]  # Веса свертки Гермейера
+    print_rating(hermeyer_bundle(norm_df, weights_bundle), True)
