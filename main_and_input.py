@@ -7,11 +7,11 @@ from normalize import normalize_function, print_rating
 from pairwise_comparisons import PC
 from wsm import WSM
 
-data_columns = ['МАШИНА', 'цена (Р)', 'год выпуска', 'пробег (км)', 'налог (Р/Год)',
-                'объем двигателя (литров)', 'кол-во л.с.', 'тип коробки передач']
-
 if __name__ == "__main__":
     #  Исходные данные
+    data_columns = ['МАШИНА', 'цена (Р)', 'год выпуска', 'пробег (км)', 'налог (Р/Год)',
+                    'объем двигателя (литров)', 'кол-во л.с.', 'тип коробки передач']
+
     input_data = pd.DataFrame(
         [['Honda Integra III', 500000, 1998, 190000, 4080, 1.6, 120, 1],
          ['Mitsubishi Eclipse III', 625000, 2003, 172500, 4896, 2.4, 149, 2],
