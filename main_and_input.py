@@ -4,6 +4,7 @@ from ideal_point import ideal_point
 from multiplicative_convolution import MC
 from hermeyer_bundle import hermeyer_bundle
 from normalize import normalize_function, print_rating
+from pairwise_comparisons import PC
 from wsm import WSM
 
 data_columns = ['МАШИНА', 'цена (Р)', 'год выпуска', 'пробег (км)', 'налог (Р/Год)',
@@ -40,6 +41,17 @@ if __name__ == "__main__":
     print("МЕТОД ВЗВЕШЕННОЙ СУММЫ")
     weights_wsm = [0.8, 0.2, 1.0, 0.7, 0.6, 0.6, 0.4]  # Веса метода взвешенной суммы
     print_rating(WSM(norm_df, weights_wsm), True)
+    print("\nВзвешенная сумма на базе парных сравнений")
+    weights_pc = [
+        [1.0, 0.8, 0.5, 1.5, 1.8, 1.6, 3.0],
+        [1.25, 1.0, 0.7, 1.3, 2.0, 1.9, 4.0],
+        [2.0, 1.43, 1.0, 2.0, 1.4, 1.2, 3.5],
+        [0.67, 0.77, 0.5, 1.0, 0.8, 0.7, 0.9],
+        [0.56, 0.5, 0.71, 1.25, 1.0, 0.8, 2.0],
+        [0.63, 0.53, 0.83, 1.43, 1.25, 1.0, 1.8],
+        [0.33, 0.25, 0.29, 1.11, 0.5, 0.56, 1.0]
+    ]
+    print_rating(PC(norm_df, weights_pc), True)
     print("\nМЕТОД МУЛЬТИПЛИКАТИВНОЙ СВЕРТКИ")
     weights_mc = [0.8, 0.2, 1.0, 0.7, 0.6, 0.6, 0.4]  # Веса метода мультипликативной свертки
     print_rating(MC(norm_df, weights_mc), True)
