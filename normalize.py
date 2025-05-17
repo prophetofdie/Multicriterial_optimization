@@ -4,7 +4,7 @@ data_columns = ['МАШИНА', 'цена (Р)', 'год выпуска', 'пр�
                 'объем двигателя (литров)', 'кол-во л.с.', 'тип коробки передач']
 
 
-def normalize_function(in_df: pd.DataFrame, dir_norm: dict[str: bool]) -> pd.DataFrame:
+def normalize_function(in_df: pd.DataFrame, dir_norm: dict[str: bool]) -> (pd.DataFrame, list):
     col_extr = [
         max(in_df[data_columns[i]].to_list()) if dir_norm[data_columns[i]] else min(in_df[data_columns[i]].to_list())
         for i in range(1, len(data_columns))
@@ -21,13 +21,10 @@ def normalize_function(in_df: pd.DataFrame, dir_norm: dict[str: bool]) -> pd.Dat
                 else col_extr[column-1]/in_df_string[column]
             )
         normalized_df.loc[string] = [key_column_name] + norm_df_string
-    return normalized_df
+    return normalized_df, col_extr
 
 
 def print_rating(evaluation_dict: dict[str: int], direction=True) -> None:
-    rating = sorted(evaluation_dict.items(), key=lambda item: item[1], reverse=True)
-    chosen_range = range(0, len(rating)) if direction else range(len(rating)-1, -1, -1)
-    for i in chosen_range:
-
+    rating = sorted(evaluation_dict.items(), key=lambda item: item[1], reverse=direction)
+    for i in range(len(rating)):
         print(f"{rating[i]}: МЕСТО {i+1}")
-

@@ -1,5 +1,5 @@
 import pandas as pd
-
+import math
 from normalize import data_columns, normalize_function, print_rating
 
 
@@ -12,6 +12,27 @@ def WSM(normalized_df: pd.DataFrame, weights: list) -> dict:
         for id_column in range(1, len(df_string)):
             element_evaluation += df_string[id_column] * weights[id_column-1]
         evaluation[element] = element_evaluation
+    return evaluation
+
+
+def ideal_point(normalized_df: pd.DataFrame, ideal_poit: list, dir_norm: dict[str: bool], col_extr: list) -> dict:
+    def least_squares(point1: list, point2: list) -> float:
+        dist = 0.0
+        for i in range(len(point1)):
+            dist += math.pow(point1[i] - point2[i], 2)
+        return math.sqrt(dist)
+
+    ideal_poit_norm = [
+        ideal_poit[i-1] / col_extr[i-1] if dir_norm[data_columns[i]]
+        else col_extr[i-1] / ideal_poit[i-1]
+        for i in range(1, len(data_columns))
+    ]  # Нормализация идеальной точки
+
+    evaluation = dict()
+    for string in range(0, len(normalized_df)):
+        df_string = normalized_df.iloc[string].to_list()
+        element = ''.join(df_string[0])
+        evaluation[element] = least_squares(ideal_poit_norm, df_string[1::])
     return evaluation
 
 
@@ -41,5 +62,10 @@ if __name__ == "__main__":
         data_columns[7]: True,
     }
 
-    norm_df = normalize_function(input_data, direction_optimisation)
-    print_rating(WSM(norm_df, [0.8, 0.2, 1.0, 0.7, 0.6, 0.6, 0.4]), False)
+    norm_df, extramural = normalize_function(input_data, direction_optimisation)
+    print("МЕТОД ВЗВЕШЕННОЙ СУММЫ")
+    weights_wsm = [0.8, 0.2, 1.0, 0.7, 0.6, 0.6, 0.4]  # Веса метода взвешенной суммы
+    print_rating(WSM(norm_df, weights_wsm), True)
+    print("\nМЕТОД ИДЕАЛЬНЫХ ТОЧЕК")
+    ideal_point_str = [1500000, 1989, 70200, 3000, 1.6, 115, 1]  # Идеальная точка
+    print_rating(ideal_point(norm_df, ideal_point_str, direction_optimisation, extramural), False)
