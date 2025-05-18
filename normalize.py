@@ -1,4 +1,5 @@
 import pandas as pd
+from tabulate import tabulate
 
 
 def normalize_function(in_df: pd.DataFrame, dir_norm: dict[str: bool]) -> (pd.DataFrame, list):
@@ -42,5 +43,6 @@ def print_rating(evaluation_dict: dict[str: int], direction=True) -> None:
     """
     # Сортировка словаря по значениям
     rating = sorted(evaluation_dict.items(), key=lambda item: item[1], reverse=direction)
-    for i in range(len(rating)):
-        print(f"{rating[i]}: МЕСТО {i+1}")
+    numbered_data = [(f'Место {i + 1}', *row) for i, row in enumerate(rating)]
+
+    print(tabulate(numbered_data, headers=['№', 'Оружие', 'Рейтинг']))
