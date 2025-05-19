@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 
 
 def random_search(func, bounds, num_iterations=1000):
@@ -49,11 +50,12 @@ if __name__ == "__main__":
     func = lambda x: x[0] ** 2 + x[1] ** 2
 
     bounds = [(-5, 5), (-5, 5)]
-    num_iterations = 1000
+    num_iterations = 10
 
     best_x, best_f, history = random_search(func, bounds, num_iterations)
 
     print(f"Лучшее решение: x = {best_x}")
     print(f"Значение функции: f(x) = {best_f}")
 
+    print(tabulate(history, headers=['x1', 'x2', 'f']))
     plot_optimization_process(history, best_x, best_f, bounds, func)

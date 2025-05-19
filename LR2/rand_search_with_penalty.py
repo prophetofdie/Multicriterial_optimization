@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 
 # === Ограничения ===
 constraints = [
@@ -63,8 +64,8 @@ def plot_optimization_process(history, best_x, best_f, bounds, func):
 # === Основной блок ===
 if __name__ == "__main__":
     bounds = [(-1, 5), (-1, 5)]
-    num_iterations = 1000
-    r = 1000  # коэффициент штрафа
+    num_iterations = 10
+    r = 1000  # коэффициент штраф
 
     best_x, best_f, history = random_search(lambda x: penalized_func(x, r), bounds, num_iterations)
 
@@ -73,3 +74,5 @@ if __name__ == "__main__":
     print(f"Штраф: {penalty(best_x, constraints)}")
 
     plot_optimization_process(history, best_x, best_f, bounds, lambda x: penalized_func(x, r))
+
+    print(tabulate(history, headers=['x1', 'x2', 'f']))
